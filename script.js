@@ -18,6 +18,9 @@ document.getElementById('csv-form').addEventListener('submit', function (event) 
         var tableContainer = document.getElementById('table-container');
         tableContainer.innerHTML = '';
         tableContainer.appendChild(table);
+  
+        // Store timetable data in browser storage
+        localStorage.setItem('timetableData', JSON.stringify(tableData));
       } else {
         console.log('No data found');
       }
@@ -25,6 +28,18 @@ document.getElementById('csv-form').addEventListener('submit', function (event) 
     reader.readAsText(file);
   
     fileInput.value = '';
+  });
+  
+  // Retrieve timetable data from browser storage on page load
+  window.addEventListener('DOMContentLoaded', function () {
+    var storedData = localStorage.getItem('timetableData');
+    if (storedData) {
+      var tableData = JSON.parse(storedData);
+      var table = createTable(tableData);
+      var tableContainer = document.getElementById('table-container');
+      tableContainer.innerHTML = '';
+      tableContainer.appendChild(table);
+    }
   });
   
   function parseCSV(csvData) {
